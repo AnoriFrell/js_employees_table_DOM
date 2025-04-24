@@ -46,12 +46,35 @@ function sortTable(ev, asc) {
 tableRows.forEach((row) => {
   row.addEventListener('click', (ev) => {
     const prevSelected = table.querySelector('.active');
-    // const selected = ev.target.closest('tr').querySelector('.active');
+    const selected = ev.target.closest('tr');
 
     if (prevSelected) {
+      selected.classList.toggle('active');
       prevSelected.classList.remove('active');
+    } else {
+      selected.classList.toggle('active');
     }
-
-    ev.target.closest('tr').classList.toggle('active');
   });
 });
+
+// FORM IMPLEMENTATION
+const form = document.createElement('form');
+
+const inputNames = ['name', 'position', 'age', 'salary'];
+
+inputNames.forEach((inputName) => {
+  const label = document.createElement('label');
+
+  label.setAttribute('for', inputName);
+
+  const input = document.createElement('input');
+
+  input.setAttribute('type', 'text');
+  input.setAttribute('data-qa', inputName);
+});
+// const nameInput = form.createElement('input');
+// const positonInput = form.createElement('input');
+// const ageInput = form.createElement('input');
+// const salaryInput = form.createElement('input');
+
+form.classList.add('new-employee-form');
