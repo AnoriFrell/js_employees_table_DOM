@@ -60,21 +60,49 @@ tableRows.forEach((row) => {
 // FORM IMPLEMENTATION
 const form = document.createElement('form');
 
+form.classList.add('new-employee-form');
+
 const inputNames = ['name', 'position', 'age', 'salary'];
+const options = ['Tokyo', 'Singapore', 'London', 'New York', 'Edinburgh'];
 
 inputNames.forEach((inputName) => {
   const label = document.createElement('label');
 
-  label.setAttribute('for', inputName);
+  label.setAttribute('for', `${inputName}`);
 
   const input = document.createElement('input');
 
+  input.setAttribute('name', `${inputName}`);
   input.setAttribute('type', 'text');
-  input.setAttribute('data-qa', inputName);
-});
-// const nameInput = form.createElement('input');
-// const positonInput = form.createElement('input');
-// const ageInput = form.createElement('input');
-// const salaryInput = form.createElement('input');
+  input.setAttribute('data-qa', `${inputName}`);
+  input.setAttribute('required', true);
 
-form.classList.add('new-employee-form');
+  label.append(input);
+  form.append(label);
+});
+
+const select = document.createElement('select');
+
+select.setAttribute('data-qa', 'office');
+select.setAttribute('required', true);
+
+const selectLabel = document.createElement('label');
+
+selectLabel.setAttribute('for', 'office');
+
+selectLabel.append(select);
+
+options.forEach((option) => {
+  const selectOption = document.createElement('option');
+
+  selectOption.value = option;
+  selectOption.textContent = option;
+
+  select.append(selectOption);
+});
+
+document.body.append(form);
+
+const thirdInput = form.querySelectorAll('label')[2];
+
+form.insertBefore(selectLabel, thirdInput);
