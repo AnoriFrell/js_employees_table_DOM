@@ -5,7 +5,6 @@
 // write code here
 const headerParams = document.querySelectorAll('thead th');
 const table = document.querySelector('tbody');
-const tableRows = table.querySelectorAll('tr');
 let isAsc = true;
 let lastSortedIndex = -1;
 
@@ -26,6 +25,7 @@ headerParams.forEach((param) => {
 
 function sortTable(ev, asc) {
   const targetIndex = [...headerParams].indexOf(ev.target);
+  const tableRows = table.querySelectorAll('tr');
 
   const sortCells = [...tableRows].sort((a, b) => {
     const aText = a.children[targetIndex].innerText;
@@ -45,18 +45,16 @@ function sortTable(ev, asc) {
 }
 
 // WHEN THE USER CLICKS ON A ROW, IT SHOULD BECOME SELECTED
-tableRows.forEach((row) => {
-  row.addEventListener('click', (ev) => {
-    const prevSelected = table.querySelector('.active');
-    const selected = ev.target.closest('tr');
+table.addEventListener('click', (ev) => {
+  const prevSelected = table.querySelector('.active');
+  const selected = ev.target.closest('tr');
 
-    if (prevSelected) {
-      selected.classList.toggle('active');
-      prevSelected.classList.remove('active');
-    } else {
-      selected.classList.toggle('active');
-    }
-  });
+  if (prevSelected) {
+    selected.classList.toggle('active');
+    prevSelected.classList.remove('active');
+  } else {
+    selected.classList.toggle('active');
+  }
 });
 
 // FORM IMPLEMENTATION
@@ -208,36 +206,34 @@ button.addEventListener('click' || 'Enter', (ev) => {
 form.append(button);
 
 // IMPLEMENTING EDITING OF TABLE CELLS BY DOUBLE CLICKING
-tableRows.forEach((row) => {
-  row.addEventListener('dblclick', (ev) => {
-    const targetCell = ev.target.closest('td');
+table.addEventListener('dblclick', (ev) => {
+  const targetCell = ev.target.closest('td');
 
-    if (!targetCell || targetCell.querySelector('input')) {
-      return;
-    }
+  if (!targetCell || targetCell.querySelector('input')) {
+    return;
+  }
 
-    const initialValue = targetCell.textContent;
+  const initialValue = targetCell.textContent;
 
-    targetCell.textContent = '';
+  targetCell.textContent = '';
 
-    const input = document.createElement('input');
+  const input = document.createElement('input');
 
-    input.classList.add('cell-input');
-    input.type = 'text';
-    input.value = initialValue;
+  input.classList.add('cell-input');
+  input.type = 'text';
+  input.value = initialValue;
 
-    targetCell.append(input);
-    input.focus();
+  targetCell.append(input);
+  input.focus();
 
-    input.addEventListener('blur', () => {
+  input.addEventListener('blur', () => {
+    saveCellValue(targetCell, input, initialValue);
+  });
+
+  input.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
       saveCellValue(targetCell, input, initialValue);
-    });
-
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        saveCellValue(targetCell, input, initialValue);
-      }
-    });
+    }
   });
 });
 
